@@ -9,6 +9,21 @@
     ]
   ],
   "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": "./src",
+        "alias": {
+          "components": "./src/components",
+          "screens": "./src/screens",
+          "navigation": "./src/navigation",
+          "utils": "./src/utils",
+          "services": "./src/services"
+        }
+
+      }
+    ],
+    ["@babel/plugin-transform-flow-strip-types"],
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 class NoMatch extends React.Component {
   render() {
-    setTimeout(() => this.props.history.push('/'), 5000);
+    setTimeout(() => this.props.history.push('/Search'), 5000);
     return (
       <div>
         <h3 style={{ marginTop: 80 }}>

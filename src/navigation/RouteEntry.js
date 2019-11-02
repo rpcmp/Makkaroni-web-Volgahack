@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Entry from 'screens/Entry';
+import Search from 'screens/Search';
 import NoMatch from 'screens/NoMatch';
+import ContributionMap from 'screens/ContributionMap';
+import Calendar from 'screens/Calendar';
+import DayPhrase from 'screens/DayPhrase/DayPhrase';
+import Authorization from 'screens/Authorization';
 
 class RouteEntry extends Component {
   render() {
@@ -9,7 +13,11 @@ class RouteEntry extends Component {
       <Router>
         <React.Fragment>
           <Switch>
-            <Route path="/Entry" component={Entry} />
+            <Route path="/auth" component={Authorization} />
+            <Route path="/map" component={ContributionMap} />
+            <Route path="/day_phrase" component={DayPhrase} />
+            <Route path="/calendar" component={Calendar} />
+            <Route path="/" component={Search} />
             <Route component={NoMatch} />
           </Switch>
         </React.Fragment>

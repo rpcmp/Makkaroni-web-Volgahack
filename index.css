@@ -1,0 +1,9 @@
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Gotham', serif;
+  background-color: rgba(239, 226, 165, 0.3);
+  height: 100%;
+  margin: 0;
+}

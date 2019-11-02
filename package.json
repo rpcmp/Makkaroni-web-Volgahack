@@ -8,12 +8,20 @@
   "license": "Apache2",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.5.2",
+    "@material-ui/icons": "^4.5.1",
+    "axios": "^0.19.0",
+    "clsx": "latest",
+    "lodash": "^4.17.15",
     "mobx": "^5.14.2",
     "mobx-react": "^6.1.4",
     "mobx-state-tree": "^3.15.0",
+    "moment": "^2.24.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "react-yandex-maps": "^4.0.1",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
@@ -39,6 +47,7 @@
     "file-loader": "^4.2.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "prettier": "^1.18.2",
     "react-svg-loader": "^3.0.3",
     "style-loader": "^1.0.0",
     "webpack": "^4.27.1",

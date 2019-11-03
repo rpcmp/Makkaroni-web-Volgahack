@@ -21,6 +21,8 @@ import Chip from '@material-ui/core/Chip';
 import { computed, observable } from 'mobx';
 import Auth from '../../stores/Auth';
 import { observer } from 'mobx-react';
+import asyncLocalStorage from '../../service/asyncLocalStorage';
+import { USER_TOKEN } from '../../utils/constants';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -89,11 +91,18 @@ class Header extends React.Component {
     return Auth.isAuth;
   }
 
-  @computed
-  get user() {
-    return Auth.user;
-  }
+  // @computed
+  // get user() {
+  //   return Auth.user;
+  // }
+
   @observable open = false;
+  @observable user = '';
+
+  async componentDidMount() {
+    this.user = await asyncLocalStorage.getItem(USER_TOKEN);
+  }
+
   handleDrawerOpen = () => {
     this.open = true;
   };

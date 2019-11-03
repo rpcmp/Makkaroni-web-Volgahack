@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,11 +11,16 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
-
+import Logotype from '../Logotype';
+import LinkBtn from '@material-ui/core/Link';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import { computed, observable } from 'mobx';
+import Auth from '../../stores/Auth';
+import { observer } from 'mobx-react';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -77,89 +82,130 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Header({ children, inputProps }) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+@observer
+class Header extends React.Component {
+  @computed
+  get isAuth() {
+    return Auth.isAuth;
+  }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  @computed
+  get user() {
+    return Auth.user;
+  }
+  @observable open = false;
+  handleDrawerOpen = () => {
+    this.open = true;
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  handleDrawerClose = () => {
+    this.open = false;
   };
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          {inputProps ? (
-            <InputBase
-              className={classes.input}
-              placeholder="Поиск по библии"
-              {...inputProps}
-            />
-          ) : null}
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? (
+  render() {
+    const { children, inputProps, history, classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: this.open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, this.open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+            {inputProps ? (
+              <InputBase
+                className={classes.input}
+                placeholder="Поиск по библии"
+                {...inputProps}
+              />
+            ) : null}
+            <div style={{ marginLeft: 'auto' }}>
+              {this.user ? (
+                <Chip
+                  avatar={<Avatar>{this.user[0]}</Avatar>}
+                  label={this.user}
+                  onClick={() => {}}
+                  variant="outlined"
+                />
+              ) : (
+                <LinkBtn
+                  component="button"
+                  variant="body2"
+                  style={{ color: '#fff' }}
+                  onClick={() => {
+                    history.push('/auth');
+                  }}
+                >
+                  SignIn / SingUp
+                </LinkBtn>
+              )}
+            </div>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          className={classes.drawer}
+          variant="persistent"
+          anchor="left"
+          open={this.open}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div className={classes.drawerHeader}>
+            <div
+              style={{
+                flexDirection: 'column',
+                marginRight: 'auto',
+                marginLeft: 'auto',
+              }}
+            >
+              <p style={{ paddingBottom: 4, fontSize: 15 }}>
+                <Logotype style={{ marginBottom: -4 }} />
+                akkaroni
+              </p>
+            </div>
+            <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {[
-            { title: 'Поиск по библии', address: '/' },
-            { title: 'Фраза дня', address: '/day_phrase' },
-            { title: 'Календарь событий', address: '/calendar' },
-            { title: 'Злачная карта', address: '/map' },
-          ].map(({ title, address }) => (
-            <ListItem button key={title}>
-              <Link to={address}>
-                <ListItemText primary={title} />
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div className={classes.drawerHeader} />
-        {children}
-      </main>
-    </div>
-  );
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {[
+              { title: 'Поиск по библии', address: '/' },
+              { title: 'Фраза дня', address: '/day_phrase' },
+              { title: 'Календарь событий', address: '/calendar' },
+              { title: 'Злачная карта', address: '/map' },
+            ].map(({ title, address }) => (
+              <ListItem button key={title}>
+                <Link to={address}>
+                  <ListItemText primary={title} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <main
+          className={clsx(classes.content, {
+            [classes.contentShift]: this.open,
+          })}
+        >
+          <div className={classes.drawerHeader} />
+          {children}
+        </main>
+      </div>
+    );
+  }
 }
+export default withStyles(useStyles, { withTheme: true })(Header);

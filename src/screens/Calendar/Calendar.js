@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Header from 'components/Header';
 import moment from 'moment';
+import { observer } from 'mobx-react';
 
+@observer
 class Calendar extends Component {
   state = {
     type: 'month',
@@ -21,9 +23,8 @@ class Calendar extends Component {
 
     return (
       <div>
-        <Header>
+        <Header history={this.props.history} >
           Calendar
-
         </Header>
       </div>
     );

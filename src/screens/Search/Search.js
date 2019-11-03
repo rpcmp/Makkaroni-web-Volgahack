@@ -4,6 +4,8 @@ import Item from './components/Item';
 import List from '@material-ui/core/List';
 import lodash from 'lodash';
 import API from 'service/api';
+import Logotype from '../../components/Logotype';
+import Typography from '@material-ui/core/Typography';
 
 class Search extends Component {
   state = {
@@ -43,7 +45,24 @@ class Search extends Component {
     if (this.state.searchValue) {
       return 'Ничего не найдено';
     }
-    return 'Введите запрос';
+    return (
+      <div>
+        <Typography variant="h1" component="h2">
+          <Logotype size={150} style={{ marginBottom: -20 }} />
+          akkaroni
+        </Typography>
+        <Typography variant="h2" component="h2">
+          Добро пожаловать на лукоморье для <b>маккаронников</b>!
+        </Typography>
+        <div
+          style={{
+            marginTop: 20,
+          }}
+        >
+          <Typography variant="h5">Введите запрос</Typography>
+        </div>
+      </div>
+    );
   };
 
   render() {
@@ -52,6 +71,7 @@ class Search extends Component {
     return (
       <div>
         <Header
+          history={this.props.history}
           inputProps={{
             type: 'text',
             value: searchValue,

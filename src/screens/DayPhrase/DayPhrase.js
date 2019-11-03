@@ -5,7 +5,7 @@ class DayPhrase extends Component {
   render() {
     return (
       <div>
-        <Header>DayPhrase</Header>
+        <Header history={this.props.history}>DayPhrase</Header>
       </div>
     );
   }

@@ -16,7 +16,7 @@ const Content = styled.div`
 class ContributionMap extends Component {
   render() {
     return (
-      <Container>
+      <Container history={this.props.history}>
         <Header />
         <Content>
           <YMaps>

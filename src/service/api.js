@@ -34,7 +34,6 @@ function init() {
 }
 init();
 
-
 const API = {
   post: async (url, data, option) => {
     return axiosInstance.post(url, data, option);

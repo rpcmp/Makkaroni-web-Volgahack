@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import asyncLocalStorage from '../../service/asyncLocalStorage';
+import { USER_TOKEN } from '../../utils/constants';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -47,11 +49,16 @@ class Authorization extends Component {
     this.username = event.target.value;
   };
 
+  componentDidMount() {
+    if (asyncLocalStorage.getItem(USER_TOKEN)) this.props.history.push('/');
+  }
+
   login = async event => {
     event.preventDefault();
     try {
       this.isLoading = true;
       await Auth.login(this.username);
+      return this.props.history.push('/');
     } catch (e) {
       console.error(e);
     } finally {

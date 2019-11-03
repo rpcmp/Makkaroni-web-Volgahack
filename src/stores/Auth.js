@@ -1,22 +1,17 @@
-import { types, onSnapshot, flow, applySnapshot } from 'mobx-state-tree';
-import api from 'service/api';
+import { types, flow } from 'mobx-state-tree';
 import asyncLocalStorage from 'service/asyncLocalStorage';
 import { USER_TOKEN, AUTH_SERVER_ADDRESS } from 'utils/constants';
 import axios from 'axios';
 
-const User = types.model({
-  firstName: types.optional(types.string, ''),
-  lastName: types.optional(types.string, ''),
-  about: types.optional(types.string, ''),
-  coordinates: types.optional(types.array(types.number), []),
-  grade: types.optional(types.string, ''),
-});
+const User = types.model({});
 
-const USER_STORE_KEY = 'USER_STORE_KEY';
-let onSnapshotListener = null;
 const Users = types
-  .model({
-    user: types.maybeNull(User),
+  .model('User', {
+    firstName: types.optional(types.maybeNull(types.string), ''),
+    lastName: types.optional(types.maybeNull(types.string), ''),
+    about: types.optional(types.maybeNull(types.string), ''),
+    coordinates: types.optional(types.array(types.number), []),
+    grade: types.optional(types.maybeNull(types.string), ''),
   })
   .views(self => ({
     get isAuth() {
@@ -48,13 +43,11 @@ const Users = types
         if (response.status) {
           yield asyncLocalStorage.setItem(USER_TOKEN, username);
           const user = response.data;
-          self.user = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            about: user.about,
-            grade: user.grade,
-            coordinates: user.coordinates,
-          };
+          self.firstName = user.firstName;
+          self.lastName = user.lastName;
+          self.about = user.about;
+          self.grade = user.grade;
+          //self.coordinates = user.coordinates;
         }
         console.log('response', response);
       }),
@@ -68,12 +61,12 @@ const Users = types
         if (response.status) {
           yield asyncLocalStorage.setItem(USER_TOKEN, username);
           const user = response.data;
-          self.user = {
-            username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            aboutMe: user.aboutMe,
-          };
+          console.log(user);
+          self.firstName = user.firstName;
+          self.lastName = user.lastName;
+          self.about = user.about;
+          self.grade = user.grade;
+         // self.coordinates = user.coordinates;
         }
       }),
     };

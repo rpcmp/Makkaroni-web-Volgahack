@@ -9,7 +9,8 @@ import List from '@material-ui/core/List';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
@@ -18,13 +19,13 @@ import LinkBtn from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import { computed, observable } from 'mobx';
-import Auth from 'stores/Auth';
+import Auth from '../../stores/Auth';
 import { observer } from 'mobx-react';
+import Typography from '@material-ui/core/Typography';
 import asyncLocalStorage from '../../service/asyncLocalStorage';
-import { USER_TOKEN } from '../../utils/constants';
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
   root: {
     display: 'flex',
   },
@@ -81,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
-}));
+});
 
 @observer
 class Header extends React.Component {
@@ -90,11 +91,10 @@ class Header extends React.Component {
     return Auth.isAuth;
   }
 
-  // @computed
-  // get user() {
-  //   return Auth.user;
-  // }
-
+  @computed
+  get user() {
+    return Auth.user;
+  }
   @observable open = false;
   @observable user = '';
 
@@ -111,7 +111,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { children, inputProps, history, classes } = this.props;
+    const { children, inputProps, history, classes, title } = this.props;
 
     return (
       <div className={classes.root}>
@@ -130,8 +130,9 @@ class Header extends React.Component {
               edge="start"
               className={clsx(classes.menuButton, this.open && classes.hide)}
             >
-              M
+              <MenuIcon />
             </IconButton>
+            <Typography variant="h5">{title}</Typography>
             {inputProps ? (
               <InputBase
                 className={classes.input}
@@ -184,7 +185,9 @@ class Header extends React.Component {
                 akkaroni
               </p>
             </div>
-            <IconButton onClick={this.handleDrawerClose}>CL</IconButton>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
           </div>
           <Divider />
           <List>

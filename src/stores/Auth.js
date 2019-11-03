@@ -18,6 +18,13 @@ const Users = types
       if (self.user && self.user.username) return true;
       return false;
     },
+    get username() {
+      const user = localStorage.getItem(USER_TOKEN);
+      if (user) {
+        return user;
+      }
+      return null;
+    },
   }))
   .actions(self => {
     return {
@@ -66,7 +73,7 @@ const Users = types
           self.lastName = user.lastName;
           self.about = user.about;
           self.grade = user.grade;
-         // self.coordinates = user.coordinates;
+          // self.coordinates = user.coordinates;
         }
       }),
     };

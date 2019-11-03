@@ -9,8 +9,6 @@ import List from '@material-ui/core/List';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
@@ -130,7 +128,7 @@ class Header extends React.Component {
               edge="start"
               className={clsx(classes.menuButton, this.open && classes.hide)}
             >
-              <MenuIcon />
+              MenuIcon
             </IconButton>
             <Typography variant="h5">{title}</Typography>
             {inputProps ? (
@@ -186,7 +184,7 @@ class Header extends React.Component {
               </p>
             </div>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              ChevronLeftIcon
             </IconButton>
           </div>
           <Divider />

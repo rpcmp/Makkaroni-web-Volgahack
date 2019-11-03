@@ -18,11 +18,26 @@ class EventsCalendar extends Component {
   }
   onChange = async date => {
     this.setState({ date });
-    await axios.get(AUTH_SERVER_ADDRESS + '', {
-      headers: {
-        username: this.user
-      },
-    });
+    await axios.get(
+      AUTH_SERVER_ADDRESS +
+        'api/meetings/between?startDate=' +
+        date.getFullYear() +
+        '-' +
+        date.getMonth() +
+        '-' +
+        date.getDay() +
+        '&endDate=' +
+        date.getFullYear() +
+        '-' +
+        date.getMonth() +
+        '-' +
+        date.getDay(),
+      {
+        headers: {
+          username: this.user,
+        },
+      }
+    );
   };
 
   render() {

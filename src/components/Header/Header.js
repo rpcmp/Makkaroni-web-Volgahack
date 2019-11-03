@@ -9,8 +9,7 @@ import List from '@material-ui/core/List';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
@@ -19,7 +18,7 @@ import LinkBtn from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import { computed, observable } from 'mobx';
-import Auth from '../../stores/Auth';
+import Auth from 'stores/Auth';
 import { observer } from 'mobx-react';
 const drawerWidth = 240;
 
@@ -122,7 +121,7 @@ class Header extends React.Component {
               edge="start"
               className={clsx(classes.menuButton, this.open && classes.hide)}
             >
-              <MenuIcon />
+              M
             </IconButton>
             {inputProps ? (
               <InputBase
@@ -176,9 +175,7 @@ class Header extends React.Component {
                 akkaroni
               </p>
             </div>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
+            <IconButton onClick={this.handleDrawerClose}>CL</IconButton>
           </div>
           <Divider />
           <List>

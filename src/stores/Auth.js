@@ -5,12 +5,11 @@ import { USER_TOKEN, AUTH_SERVER_ADDRESS } from 'utils/constants';
 import axios from 'axios';
 
 const User = types.model({
-  username: types.string,
   firstName: types.optional(types.string, ''),
   lastName: types.optional(types.string, ''),
-  aboutMe: types.optional(types.string, ''),
-  prefix: types.optional(types.string, '🍝'),
-  localAddress: types.optional(types.string, ''),
+  about: types.optional(types.string, ''),
+  coordinates: types.optional(types.array(types.number), []),
+  grade: types.optional(types.string, ''),
 });
 
 const USER_STORE_KEY = 'USER_STORE_KEY';
@@ -50,10 +49,11 @@ const Users = types
           yield asyncLocalStorage.setItem(USER_TOKEN, username);
           const user = response.data;
           self.user = {
-            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
-            aboutMe: user.aboutMe,
+            about: user.about,
+            grade: user.grade,
+            coordinates: user.coordinates,
           };
         }
         console.log('response', response);

@@ -1,174 +1,110 @@
 import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Auth from 'stores/Auth';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
+const useStyles = makeStyles(theme => ({
+  '@global': {
+    body: {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+@observer
 class Authorization extends Component {
-  state = {
-    username: '',
-    lastName: '',
-    firstName: '',
-    isValid: true,
-    isSignUp: false,
-    isLoading: false,
+  @observable isLoading = false;
+  @observable username = '';
+  @observable lastName = '';
+  @observable firstNme = '';
+
+  setUsername = event => {
+    this.username = event.target.value;
   };
 
-  handleUsername = event => {
-    this.setState({ username: event.target.value });
-  };
-
-  handleLastName = event => {
-    this.setState({ lastName: event.target.value });
-  };
-
-  handleFirstName = event => {
-    this.setState({ firstName: event.target.value });
-  };
-
-  handleSubmit = async event => {
+  login = async event => {
     event.preventDefault();
-    const { username } = this.state;
-
     try {
-      this.setState({ isLoading: true });
-      await Auth.login(username);
-      // eslint-disable-next-line no-undef
-      this.props.history.push('/');
+      this.isLoading = true;
+      await Auth.login(this.username);
     } catch (e) {
-      this.setState({ isSignUp: true });
+      console.error(e);
     } finally {
-      this.setState({ isLoading: false });
+      this.isLoading = false;
     }
-  };
-
-  handleSubmitSingUp = async event => {
-    event.preventDefault();
-    const { username, lastName, firstName } = this.state;
-    try {
-      this.setState({ isLoading: true });
-      await Auth.singUp({ username, lastName, firstName });
-      // eslint-disable-next-line no-undef
-      this.props.history.push('/');
-    } catch (e) {
-      this.setState({ isValid: false });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
-  singIn = () => {
-    const { username, isValid, isLoading } = this.state;
-    return (
-      <Grid container spacing={2}>
-        <form
-          onSubmit={this.handleSubmit}
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-          }}
-        >
-          <TextField
-            label="Username"
-            margin="normal"
-            variant="outlined"
-            error={!isValid}
-            value={username}
-            onChange={this.handleUsername}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={isLoading}
-          >
-            Login
-          </Button>
-        </form>
-        <Link
-          component="button"
-          variant="body2"
-          onClick={() => {
-            this.setState({ isSignUp: true });
-          }}
-        >
-          SignIn
-        </Link>
-      </Grid>
-    );
-  };
-
-  singUp = () => {
-    const { username, isValid, isLoading, lastName, firstName } = this.state;
-    return (
-      <>
-        <form onSubmit={this.handleSubmitSingUp}>
-          <TextField
-            label="Username"
-            margin="normal"
-            variant="outlined"
-            error={!isValid}
-            value={username}
-            onChange={this.handleUsername}
-          />
-          <TextField
-            label="First name"
-            margin="normal"
-            variant="outlined"
-            error={!isValid}
-            value={firstName}
-            onChange={this.handleFirstName}
-          />
-          <TextField
-            label="Last name"
-            margin="normal"
-            variant="outlined"
-            error={!isValid}
-            value={lastName}
-            onChange={this.handleLastName}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={isLoading}
-          >
-            SignIn
-          </Button>
-        </form>
-        <Link
-          component="button"
-          variant="body2"
-          onClick={() => {
-            this.setState({ isSignUp: false });
-          }}
-        >
-          SignUp
-        </Link>
-      </>
-    );
   };
 
   render() {
-    const { isSignUp } = this.state;
+    const { classes } = this.props;
     return (
       <React.Fragment>
         <CssBaseline />
-        <Container maxWidth="sm">
-          <Typography
-            component="div"
-            style={{ backgroundColor: '#cfe8fc', height: '100vh' }}
-          >
-            {isSignUp ? this.singUp() : this.singIn()}
-          </Typography>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={this.login}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={this.username}
+                onChange={this.setUsername}
+                id="email"
+                label="Username"
+                name="username"
+                autoFocus
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
         </Container>
       </React.Fragment>
     );
   }
 }
 
-export default Authorization;
+export default withStyles(useStyles, { withTheme: true })(Authorization);

@@ -16,8 +16,7 @@ import Logotype from '../Logotype';
 import LinkBtn from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import { computed, observable } from 'mobx';
-import Auth from '../../stores/Auth';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Typography from '@material-ui/core/Typography';
 import asyncLocalStorage from '../../service/asyncLocalStorage';
@@ -63,6 +62,7 @@ const useStyles = theme => ({
   },
   content: {
     flexGrow: 1,
+    height: '100%',
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
@@ -83,21 +83,12 @@ const useStyles = theme => ({
 });
 
 @observer
-class Header extends React.Component {
-  @computed
-  get isAuth() {
-    return Auth.isAuth;
-  }
-
-  @computed
-  get user() {
-    return Auth.user;
-  }
+class Header extends React.PureComponent {
   @observable open = false;
   @observable user = '';
 
   async componentDidMount() {
-    this.user = await asyncLocalStorage.getItem(USER_TOKEN);
+    this.user = await asyncLocalStorage.getItem('USER_TOKEN');
   }
 
   handleDrawerOpen = () => {
@@ -128,7 +119,7 @@ class Header extends React.Component {
               edge="start"
               className={clsx(classes.menuButton, this.open && classes.hide)}
             >
-              MenuIcon
+              <Logotype style={{ marginBottom: -4 }} />
             </IconButton>
             <Typography variant="h5">{title}</Typography>
             {inputProps ? (
@@ -183,9 +174,7 @@ class Header extends React.Component {
                 akkaroni
               </p>
             </div>
-            <IconButton onClick={this.handleDrawerClose}>
-              ChevronLeftIcon
-            </IconButton>
+            <IconButton onClick={this.handleDrawerClose}>-></IconButton>
           </div>
           <Divider />
           <List>
@@ -207,9 +196,10 @@ class Header extends React.Component {
           className={clsx(classes.content, {
             [classes.contentShift]: this.open,
           })}
+          style={{ height: '100%' }}
         >
           <div className={classes.drawerHeader} />
-          {children}
+          {children ? children : null}
         </main>
       </div>
     );

@@ -19,7 +19,7 @@ const Users = types
       return false;
     },
     get username() {
-      const user = localStorage.getItem(USER_TOKEN);
+      const user = localStorage.getItem('USER_TOKEN');
       if (user) {
         return user;
       }
@@ -48,7 +48,7 @@ const Users = types
           }
         );
         if (response.status) {
-          yield asyncLocalStorage.setItem(USER_TOKEN, username);
+          yield asyncLocalStorage.setItem("USER_TOKEN", username);
           const user = response.data;
           self.firstName = user.firstName;
           self.lastName = user.lastName;
@@ -66,7 +66,7 @@ const Users = types
         });
         console.log('response', response);
         if (response.status) {
-          yield asyncLocalStorage.setItem(USER_TOKEN, username);
+          yield asyncLocalStorage.setItem("USER_TOKEN", username);
           const user = response.data;
           console.log(user);
           self.firstName = user.firstName;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from 'components/Header';
-import Animation from './components/Animation';
+import monstr from 'assets/prazdnichny_chuvachok.png';
 import API from '../../service/api';
 import Typography from '@material-ui/core/Typography';
 
@@ -10,38 +10,40 @@ class DayPhrase extends Component {
     pushCount: 0,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     try {
-      const citations = await API.get('http://192.168.1.98:8080/api/citations');
-      this.setState({ citations });
+      setTimeout(async () => {
+        const citations = await API.get(
+          'http://192.168.1.98:8080/api/citations/random'
+        );
+        console.log(citations.data.content);
+        const content = citations.data.content;
+        this.setState({ citations: content });
+      }, 1000);
     } catch (e) {
       this.setState({ citations: 'Произошел взлом ЖОПЫ' });
     }
   }
 
-  handleCounter = () => {
-    let pushCount = this.state.pushCount;
-    console.log('pushCount', pushCount);
-    if (pushCount >= 4) {
-      this.setState({ pushCount: 0 });
-    }
-    pushCount++;
-    this.setState({ pushCount });
-  };
-
   render() {
     return (
       <div>
         <Header title="Маккаронни фор асс" history={this.props.history}>
-          <div style={{ marginTop: 70 }} onClick={this.handleCounter}>
-            {this.state.pushCount >= 3 ? (
-              <Typography variant="h5">{this.state.citations}</Typography>
-            ) : (
-              <>
-                <Animation />
-                Push ME
-              </>
-            )}
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              marginTop: 70,
+            }}
+          >
+            <Typography variant="h5">{this.state.citations}</Typography>
+            <div style={{ marginLeft: 'auto', width: '100%' }}>
+              <img
+                style={{ position: 'absolute', right: 20, width: 350 }}
+                src={monstr}
+                alt=""
+              />
+            </div>
           </div>
         </Header>
       </div>

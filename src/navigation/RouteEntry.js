@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Search from 'screens/Search';
 import NoMatch from 'screens/NoMatch';
 import ContributionMap from 'screens/ContributionMap';
-import Calendar from 'screens/Calendar';
+import EventsCalendar from 'screens/Calendar';
 import DayPhrase from 'screens/DayPhrase/DayPhrase';
 import Authorization from 'screens/Authorization';
 
@@ -16,7 +16,7 @@ class RouteEntry extends Component {
             <Route path="/auth" component={Authorization} />
             <Route path="/map" component={ContributionMap} />
             <Route path="/day_phrase" component={DayPhrase} />
-            <Route path="/calendar" component={Calendar} />
+            <Route path="/calendar" component={EventsCalendar} />
             <Route path="/" component={Search} />
             <Route component={NoMatch} />
           </Switch>
